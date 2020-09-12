@@ -1,2 +1,4 @@
-FROM tomcat:8
-COPY target/*.war /uar/local/tomcal/webapps/
+FROM scratch
+EXPOSE 9090
+COPY target/*.war /usr/local/
+ENTRYPOINT ["java","-jar","/devops.war"]
