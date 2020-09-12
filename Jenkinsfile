@@ -20,14 +20,14 @@ pipeline {
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
 		}
 	  }
-	  stage('Push Docker Image'){
+	 /* stage('Push Docker Image'){
            steps {
         	withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
             sh "docker login -u gauravbhutani30 -p ${dockerHubPwd}"
         }
         	sh 'docker push gauravbhutani30/devops:${DOCKER_TAG}'
           }
-      }
+      }*/
    }
 }
 def getDockerTag() {
