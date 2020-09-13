@@ -91,11 +91,14 @@ pipeline {
 		   stage ('Check Build Status') {
                       steps {
                 script {
-                    if (currentBuild.result = 'FAILURE') {
-                        echo 'Rolling back to previous version'
-                    } else {
-                        echo 'Continue...'
-                    }
+                    try {
+        // do something that fails
+        sh "exit 1"
+        currentBuild.result = 'SUCCESS'
+    } catch (Exception err) {
+        currentBuild.result = 'FAILURE'
+    }
+    echo "RESULT: ${currentBuild.result}"
                 }
             }  
    }
