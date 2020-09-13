@@ -27,7 +27,7 @@ pipeline {
 				   ], 
 				   credentialsId: 'nexus3', 
 				   groupId: 'com.example', 
-				   nexusUrl: '40.117.153.227', 
+				   nexusUrl: '10.0.1.4', 
 				   nexusVersion: 'nexus3', 
 				   protocol: 'http', 
 				   repository: 'devops-release', 
