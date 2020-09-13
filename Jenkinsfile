@@ -9,17 +9,27 @@ pipeline {
 		   git 'https://github.com/gauravbhutani30/devops-demo.git'
 		   }
 	   }
-	   stage("Maven Build"){
+	  
+	stage("Maven Build"){
 	       steps {
 		   sh "mvn clean install"
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
-      }
-	   /*
-	    stage("Upload war to Nexus") {
+           }
+	   
+	/*   
+	 stage("SonarQube Analysis"){
+	        steps {
+			withSonarQubeEnv('sonar') {
+			sh "mvn sonar:sonar"
+		   }
+		}
+	  }
+*/
+	  stage("Upload war to Nexus") {
 	         steps {
 			 script{
-				 def mavenPom = readMavenPom file: 'pom.xml' 
+			def mavenPom = readMavenPom file: 'pom.xml' 
 			       nexusArtifactUploader artifacts: [
 				   [ 
 				   artifactId: 'demo', 
@@ -35,10 +45,10 @@ pipeline {
 				   protocol: 'http', 
 				   repository: 'devops-release', 
 				   version: "${mavenPom.version}" 
-			 }
-	  }
+	            }
+	        }
 	    }
-	  */
+	  
 	   stage("Deploy to container"){
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
@@ -48,33 +58,30 @@ pipeline {
 	   /*
 	   stage("Deploy to container - Manual Approval") {
     		   steps {
-      //def userInput = false
-        script {
-            def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
+                        script {
+                    def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
 											   defaultValue: true, 
 											   description: '', 
 											   name: 'Please confirm you agree with this']])
-            echo 'userInput: ' + userInput
+                         echo 'userInput: ' + userInput
 
-            if(userInput == true) {
-               sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}" 
-            } else {
-                // not do action
-                echo "Action was aborted."
-            }
-
-        }    
-    }  
-}
+		    if(userInput == true) {
+		       sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}" 
+		    } else {
+			echo "Action was aborted."
+		    }
+              }    
+         }  
+    }
 */
-	 /* stage('Push Docker Image'){
-           steps {
-        	withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
-            sh "docker login -u gauravbhutani30 -p ${dockerHubPwd}"
-        }
+	   stage('Push Docker Image'){
+                   steps {
+        	 withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
+                    sh "docker login -u gauravbhutani30 -p ${dockerHubPwd}"
+          }
         	sh 'docker push gauravbhutani30/devops:${DOCKER_TAG}'
           }
-      }*/
+      }
 	   stage('Deploy to Kubernetes') {
 	        steps {
 			    sh "chmod +x changeTag.sh"
@@ -89,23 +96,26 @@ pipeline {
 			      */
 				}
 		}
-		   stage ('Check Build Status') {
+	   /*
+	    stage ('Check Build Status') {
                       steps {
-                script {
-                    try {
-        currentBuild.result = 'SUCCESS'
-    } catch (Exception err) {
-			    sh 'exit 1'
-        currentBuild.result = 'FAILURE'
-			    echo 'Build if Failed'
-    }
-    echo "RESULT: ${currentBuild.result}"
-                }
-            }  
-		   } 
+		          script {
+		  try {
+		    currentBuild.result = 'SUCCESS'
+		      } catch (Exception err) {
+		    sh 'exit 1'
+		    currentBuild.result = 'FAILURE'
+		    echo 'Build if Failed'
+		    }
+		    echo "RESULT: ${currentBuild.result}"
+		}
+	     }  
+         } 
+     }
+     */
 }
-}
+
 def getDockerTag() {
           def tag = sh script: 'git rev-parse HEAD', returnStdout: true
           return tag
-    }
+}
