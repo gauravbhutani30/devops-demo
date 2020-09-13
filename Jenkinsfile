@@ -86,7 +86,8 @@ pipeline {
 				  }catch(error){
 				   sh "kubectl -f create ."
 			      }
-				}*/
+			      */
+				}
 		}
 		   stage ('Check Build Status') {
                       steps {
