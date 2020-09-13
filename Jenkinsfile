@@ -16,20 +16,20 @@ pipeline {
 		   sh "mvn clean install"
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
-           }
+    }
 	   
 	/*   
-	 stage("SonarQube Analysis"){
+	stage("SonarQube Analysis"){
 	        steps {
 			withSonarQubeEnv('sonar') {
 			sh "mvn sonar:sonar"
 		   }
 		}
-	  }
+	}
 */
-	  stage("Upload war to Nexus") {
-	         steps {
-			 script{
+	stage("Upload war to Nexus") {
+	          steps {
+			script {
 			def mavenPom = readMavenPom file: 'pom.xml' 
 			       nexusArtifactUploader artifacts: [
 				   [ 
@@ -54,7 +54,7 @@ pipeline {
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
 		}
-	  }
+	}
 	  
 	   /*
 	   stage("Deploy to container - Manual Approval") {
@@ -70,8 +70,8 @@ pipeline {
 		    } else {
 			echo "Action was aborted."
 		    }
-              }    
-         }  
+          }    
+       }  
     }
 */
 	   stage('Push Docker Image'){
@@ -92,11 +92,11 @@ pipeline {
 				   sh "kubectl -f apply ."
 				  }catch(error){
 				   sh "kubectl -f create ."
-			      }
-			      */
-				}
+			    }
+			}
+			*/
 		}
-		}
+	}
 	   /*
 	    stage ('Check Build Status') {
                       steps {
@@ -109,9 +109,9 @@ pipeline {
 		    echo 'Build if Failed'
 		    }
 		    echo "RESULT: ${currentBuild.result}"
-		}
-	     }  
-         }
+		 }
+	   }  
+    }
 */		 
      }
 
@@ -234,6 +234,7 @@ pipeline {
          }
 */		 
      }
+}
 
 def getDockerTag() {
           def tag = sh script: 'git rev-parse HEAD', returnStdout: true
