@@ -35,7 +35,7 @@ pipeline {
 				   version: '0.0.1' 
 			 }
 	  }
-	  */
+	  
 	   stage("Deploy to container"){
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
