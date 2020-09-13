@@ -73,7 +73,7 @@ pipeline {
           }    
        }  
     }
-*/
+         */
 	   stage('Push Docker Image'){
                    steps {
         	 withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
@@ -88,18 +88,16 @@ pipeline {
 			    sh "chmod +x changeTag.sh"
 				sh "./changeTag.sh ${DOCKER_TAG}"
 				sh "cp services.yml node-app-pod.yml /home"
-				/*script {
+				script {
 				   try {
 				   sh "kubectl -f apply ."
 				  }catch(error){
 				   sh "kubectl -f create ."
 			    }
 			}
-			*/
 		}
 	}
-*/
-	   /*
+
 	    stage ('Check Build Status') {
                       steps {
 		          script {
@@ -114,7 +112,7 @@ pipeline {
 		 }
 	   }  
     }
-*/		 
+    */		 
      }
 }
 def getDockerTag() {
