@@ -64,7 +64,6 @@ pipeline {
 											   description: '', 
 											   name: 'Please confirm you agree with this']])
                          echo 'userInput: ' + userInput
-
 		    if(userInput == true) {
 		       sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}" 
 		    } else {
@@ -96,6 +95,7 @@ pipeline {
 			      */
 				}
 		}
+		}
 	   /*
 	    stage ('Check Build Status') {
                       steps {
@@ -110,9 +110,10 @@ pipeline {
 		    echo "RESULT: ${currentBuild.result}"
 		}
 	     }  
-         } 
+         }
+*/		 
      }
-     */
+     
 }
 
 def getDockerTag() {
