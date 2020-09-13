@@ -15,6 +15,7 @@ pipeline {
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
       }
+	   /*
 	    stage("Upload war to Artifactory") {
 	         steps {
 			       nexusArtifactUploader artifacts: [
@@ -34,6 +35,7 @@ pipeline {
 				   version: '0.0.1' 
 			 }
 	  }
+	  */
 	   stage("Deploy to container"){
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
