@@ -1,4 +1,4 @@
 FROM openjdk:8-jdk-alpine
-EXPOSE 9090
+EXPOSE 8080
 COPY target/*.war /usr/local/
 ENTRYPOINT ["java","-jar","/devops.war"]
