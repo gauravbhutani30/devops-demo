@@ -37,6 +37,7 @@ pipeline {
 				   version: "${mavenPom.version}" 
 			 }
 	  }
+	    }
 	  
 	   stage("Deploy to container"){
 		   steps{
