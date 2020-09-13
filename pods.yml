@@ -9,4 +9,4 @@ spec:
     - name: nodeapp
       image: gauravbhutani30/devops:tagVersion
       ports:
-        - containerPort: 9090
+        - containerPort: 8080
