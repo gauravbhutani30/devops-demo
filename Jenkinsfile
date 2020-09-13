@@ -75,6 +75,25 @@ pipeline {
         	sh 'docker push gauravbhutani30/devops:${DOCKER_TAG}'
           }
       }*/
+	   stage('Deploy to Kubernetes') {
+	        steps {
+			    sh "chmod +x changeTag.sh"
+				sh "./changeTag.sh ${DOCKER_TAG}"
+				sh "cp services.yml node-app-pod.yml /opt"
+				/*script {
+				   try {
+				   sh "kubectl -f apply ."
+				  }catch(error){
+				   sh "kubectl -f create ."
+			      }
+				}*/
+			}
+	  }
+	  post {
+        failure {
+            echo 'I failed :('
+    }
+   }
    }
 }
 def getDockerTag() {
