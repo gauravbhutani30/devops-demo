@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nodeapp
+  name: springbootapp
   labels:
-    app: nodeapp
+    app: springbootapp
 spec:
   containers:
     - name: nodeapp
       image: gauravbhutani30/devops:tagVersion
       ports:
-        - containerPort: 8080
+        - containerPort: 9090
