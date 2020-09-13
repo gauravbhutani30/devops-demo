@@ -3,22 +3,24 @@ pipeline {
    environment {
        DOCKER_TAG = getDockerTag()
    } 
-   
+
+   //Checkout the code from Git   
    stages {
        stage("SCM Checkout"){
 	       steps{
 		   git 'https://github.com/gauravbhutani30/devops-demo.git'
 		   }
 	   }
-	  
+	
+    //Build through maven and package	
 	stage("Maven Build"){
 	       steps {
 		   sh "mvn clean install"
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
     }
-	   
-	/*   
+	     
+	//Check code Quality through SonarQube	 
 	stage("SonarQube Analysis"){
 	        steps {
 			withSonarQubeEnv('sonar') {
@@ -26,7 +28,8 @@ pipeline {
 		   }
 		}
 	}
-*/
+
+	//Upload the war file to Nexus
 	stage("Upload war to Nexus") {
 	          steps {
 			script {
@@ -49,71 +52,44 @@ pipeline {
 	            }
 	        }
 	    }
-	  
-	   stage("Deploy to container"){
+	
+    //Build the docker image 	
+	stage("Build Docker Image"){
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
 		}
 	}
 	  
 	   /*
-	   stage("Deploy to container - Manual Approval") {
+	   //This is a working step to show the manual approval step
+	   stage("Build Docker Image - Manual Approval") {
     		   steps {
                         script {
-                    def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
+        def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
 											   defaultValue: true, 
 											   description: '', 
 											   name: 'Please confirm you agree with this']])
                          echo 'userInput: ' + userInput
-		    if(userInput == true) {
+		if(userInput == true) {
 		       sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}" 
-		    } else {
+		} else {
 			echo "Action was aborted."
-		    }
-          }    
-       }  
+		}
+       }    
+      }  
     }
-         */
-	   stage('Push Docker Image'){
+    */
+	   
+	//Push the docker image to Docker Hub
+	stage('Push Docker Image'){
                    steps {
         	 withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
                     sh "docker login -u gauravbhutani30 -p ${dockerHubPwd}"
           }
         	sh 'docker push gauravbhutani30/devops:${DOCKER_TAG}'
           }
-      }
-	 /*  
-	   stage('Deploy to Kubernetes') {
-	        steps {
-			    sh "chmod +x changeTag.sh"
-				sh "./changeTag.sh ${DOCKER_TAG}"
-				sh "cp services.yml node-app-pod.yml /home"
-				script {
-				   try {
-				   sh "kubectl -f apply ."
-				  }catch(error){
-				   sh "kubectl -f create ."
-			    }
-			}
-		}
-	}
-
-	    stage ('Check Build Status') {
-                      steps {
-		          script {
-		  try {
-		    currentBuild.result = 'SUCCESS'
-		      } catch (Exception err) {
-		    sh 'exit 1'
-		    currentBuild.result = 'FAILURE'
-		    echo 'Build if Failed'
-		    }
-		    echo "RESULT: ${currentBuild.result}"
-		 }
-	   }  
-    }
-    */		 
-     }
+      } 
+   }
 }
 def getDockerTag() {
           def tag = sh script: 'git rev-parse HEAD', returnStdout: true
