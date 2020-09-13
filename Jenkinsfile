@@ -87,15 +87,17 @@ pipeline {
 				   sh "kubectl -f create ."
 			      }
 				}*/
-		
-		post {
-        failure {
-            echo 'I failed :('
-    }
-   }
 		}
-	  }
-	  
+		   stage ('Check Build Status') {
+                      steps {
+                script {
+                    if (currentBuild.result = "FAILED") {
+                        echo 'Rolling back to previous version'
+                    } else {
+                        echo 'Continue...'
+                    }
+                }
+            }  
    }
 }
 def getDockerTag() {
