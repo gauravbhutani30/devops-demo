@@ -91,7 +91,7 @@ pipeline {
 		   stage ('Check Build Status') {
                       steps {
                 script {
-                    if (currentBuild.result = "FAILED") {
+                    if (currentBuild.result = 'FAILURE') {
                         echo 'Rolling back to previous version'
                     } else {
                         echo 'Continue...'
