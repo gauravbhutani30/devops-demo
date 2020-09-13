@@ -20,8 +20,9 @@ pipeline {
 			       nexusArtifactUploader artifacts: [
 				   [ 
 				   artifactId: 'demo', 
-				   classifier: '', file: 
-				   'target/demo-${DOCKER_TAG}.war', type: 'war'
+				   classifier: '', 
+			           file: 'target/demo-${DOCKER_TAG}.war', 
+			           type: 'war'
 				   ]
 				   ], 
 				   credentialsId: 'nexus3', 
