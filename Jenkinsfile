@@ -15,14 +15,32 @@ pipeline {
 		   sh "mv target/*.war target/devops.war"
 		 } 
       }
-	 /*
+	    stage("Upload war to Artifactory") {
+	         steps {
+			       nexusArtifactUploader artifacts: [
+				   [ 
+				   artifactId: 'demo', 
+				   classifier: '', file: 
+				   'target/demo-0.0.1.war', type: 'war'
+				   ]
+				   ], 
+				   credentialsId: 'nexus3', 
+				   groupId: 'com.example', 
+				   nexusUrl: '40.117.153.227', 
+				   nexusVersion: 'nexus3', 
+				   protocol: 'http', 
+				   repository: 'devops-release', 
+				   version: '0.0.1' 
+			 }
+	  }
 	   stage("Deploy to container"){
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
 		}
 	  }
-	  */
-	   stage("Stage with input") {
+	  
+	   /*
+	   stage("Deploy to container - Manual Approval") {
     		   steps {
       //def userInput = false
         script {
@@ -42,6 +60,7 @@ pipeline {
         }    
     }  
 }
+*/
 	 /* stage('Push Docker Image'){
            steps {
         	withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
