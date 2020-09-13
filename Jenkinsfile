@@ -95,6 +95,7 @@ pipeline {
                     try {
         currentBuild.result = 'SUCCESS'
     } catch (Exception err) {
+			    sh 'exit 1'
         currentBuild.result = 'FAILURE'
 			    echo 'Build if Failed'
     }
