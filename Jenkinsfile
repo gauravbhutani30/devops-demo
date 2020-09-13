@@ -15,11 +15,33 @@ pipeline {
 		   sh "mv target/*.war target/devops.war"
 		 } 
       }
+	 /*
 	   stage("Deploy to container"){
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
 		}
 	  }
+	  */
+	   stage("Stage with input") {
+    		   steps {
+      def userInput = false
+        script {
+            def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
+											   defaultValue: true, 
+											   description: '', 
+											   name: 'Please confirm you agree with this']])
+            echo 'userInput: ' + userInput
+
+            if(userInput == true) {
+               sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}" 
+            } else {
+                // not do action
+                echo "Action was aborted."
+            }
+
+        }    
+    }  
+}
 	 /* stage('Push Docker Image'){
            steps {
         	withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
