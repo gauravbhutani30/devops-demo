@@ -15,8 +15,8 @@ pipeline {
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
       }
-	   /*
-	    stage("Upload war to Artifactory") {
+	   
+	    stage("Upload war to Nexus") {
 	         steps {
 			       nexusArtifactUploader artifacts: [
 				   [ 
@@ -28,7 +28,7 @@ pipeline {
 				   ], 
 				   credentialsId: 'nexus3', 
 				   groupId: 'com.example', 
-				   nexusUrl: '10.0.1.4', 
+				   nexusUrl: '40.117.153.227:8081
 				   nexusVersion: 'nexus3', 
 				   protocol: 'http', 
 				   repository: 'devops-release', 
