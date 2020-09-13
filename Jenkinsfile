@@ -12,7 +12,7 @@ pipeline {
 	   stage("Maven Build"){
 	       steps {
 		   sh "mvn clean install"
-		   sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
+		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
       }
 	    stage("Upload war to Artifactory") {
@@ -21,7 +21,7 @@ pipeline {
 				   [ 
 				   artifactId: 'demo', 
 				   classifier: '', 
-			           file: 'target/demo-${DOCKER_TAG}.war', 
+			           file: 'target/demo-0.0.1.war', 
 			           type: 'war'
 				   ]
 				   ], 
