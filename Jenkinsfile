@@ -79,7 +79,7 @@ pipeline {
 	        steps {
 			    sh "chmod +x changeTag.sh"
 				sh "./changeTag.sh ${DOCKER_TAG}"
-				//sh "cp services.yml node-app-pod.yml /opt"
+				sh "cp services.yml node-app-pod.yml /home"
 				/*script {
 				   try {
 				   sh "kubectl -f apply ."
@@ -93,11 +93,10 @@ pipeline {
                       steps {
                 script {
                     try {
-        // do something that fails
-        sh "exit 1"
         currentBuild.result = 'SUCCESS'
     } catch (Exception err) {
         currentBuild.result = 'FAILURE'
+			    echo 'Build if Failed'
     }
     echo "RESULT: ${currentBuild.result}"
                 }
