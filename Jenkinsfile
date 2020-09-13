@@ -82,6 +82,7 @@ pipeline {
         	sh 'docker push gauravbhutani30/devops:${DOCKER_TAG}'
           }
       }
+	 /*  
 	   stage('Deploy to Kubernetes') {
 	        steps {
 			    sh "chmod +x changeTag.sh"
@@ -97,6 +98,7 @@ pipeline {
 			*/
 		}
 	}
+*/
 	   /*
 	    stage ('Check Build Status') {
                       steps {
