@@ -79,7 +79,7 @@ pipeline {
 	        steps {
 			    sh "chmod +x changeTag.sh"
 				sh "./changeTag.sh ${DOCKER_TAG}"
-				sh "cp services.yml node-app-pod.yml /opt"
+				//sh "cp services.yml node-app-pod.yml /opt"
 				/*script {
 				   try {
 				   sh "kubectl -f apply ."
