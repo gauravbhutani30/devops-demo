@@ -87,13 +87,15 @@ pipeline {
 				   sh "kubectl -f create ."
 			      }
 				}*/
-			}
-	  }
-	  post {
+		
+		post {
         failure {
             echo 'I failed :('
     }
    }
+		}
+	  }
+	  
    }
 }
 def getDockerTag() {
