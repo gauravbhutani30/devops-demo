@@ -15,7 +15,7 @@ pipeline {
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
       }
-	   
+	   /*
 	    stage("Upload war to Nexus") {
 	         steps {
 			 script{
@@ -38,7 +38,7 @@ pipeline {
 			 }
 	  }
 	    }
-	  
+	  */
 	   stage("Deploy to container"){
 		   steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
