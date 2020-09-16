@@ -19,8 +19,8 @@ pipeline {
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
     }
-	     
-	//Check code Quality through SonarQube	 
+	   /*  
+	//Code Quality through SonarQube	 
 	stage("SonarQube Analysis"){
 	        steps {
 			withSonarQubeEnv('sonar') {
@@ -52,7 +52,7 @@ pipeline {
 	            }
 	        }
 	    }
-	
+*/	
     //Build the docker image 	
 	stage("Build Docker Image"){
 		   steps{
@@ -88,7 +88,40 @@ pipeline {
           }
         	sh 'docker push gauravbhutani30/devops:${DOCKER_TAG}'
           }
-      } 
+      }
+	
+	//Deploy the docker image on Kubernetes
+	stage('Deploy to Kubernetes') {
+	        steps {
+			    sh "chmod +x changeTag.sh"
+				sh "./changeTag.sh ${DOCKER_TAG}"
+				//sh "cp services.yml node-app-pod.yml /home/devopsadmin"
+				sh "cat node-app-pod.yml"
+				script {
+				   try {
+				   sh "kubectl apply -f ."
+				  }catch(error){
+				   sh "kubectl create -f ."
+			    }
+			}
+		}
+	}
+/*
+	stage ('Check Build Status') {
+            steps {
+		       script {
+		  try {
+		    currentBuild.result = 'SUCCESS'
+		      } catch (Exception err) {
+		    sh 'exit 1'
+		    currentBuild.result = 'FAILURE'
+		    echo 'Build if Failed'
+		    }
+		    echo "RESULT: ${currentBuild.result}"
+		 }
+	   }  
+    }
+    */		 
    }
 }
 def getDockerTag() {
