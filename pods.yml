@@ -6,7 +6,7 @@ metadata:
     app: springbootapp
 spec:
   containers:
-    - name: nodeapp
+    - name: springbootapp
       image: gauravbhutani30/devops:tagVersion
       ports:
         - containerPort: 8080
