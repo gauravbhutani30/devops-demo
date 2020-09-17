@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springbootapp1
+  name: springbootapp2
   labels:
-    app: springbootapp1
+    app: springbootapp2
 spec:
    replicas: 4
    strategy:
@@ -13,14 +13,14 @@ spec:
       maxUnavailable: 25%
    selector:
      matchLabels:
-      app: springbootapp1
+      app: springbootapp2
    template:
      metadata:
       labels:
-        app: springbootapp1
+        app: springbootapp2
      spec:
          containers:
-         - name: springbootapp1
-           image: gauravbhutani30/devops:2082d6e2044408f9174f600f62998f8238e2e406
+         - name: springbootapp2
+           image: gauravbhutani30/devops:${tagVersion}
            ports:
            - port: 8080
