@@ -52,7 +52,7 @@ pipeline {
 	            }
 	        }
 	    }
-	/*
+	
         //Build the docker image 	
 	stage("Build Docker Image"){
 		  steps {
@@ -64,8 +64,8 @@ pipeline {
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
 		}
 	}
-	  */
-
+	  
+/*
     //This is a working step to show the manual approval step
 	 stage("Build Docker Image - Manual Approval") {
     		   steps {
@@ -86,7 +86,7 @@ pipeline {
        }    
       }  
     }
- 
+ */
       //Push the docker image to Docker Hub
       stage('Push Docker Image'){
                 steps {
