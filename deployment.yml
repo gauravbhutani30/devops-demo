@@ -21,6 +21,6 @@ spec:
      spec:
          containers:
          - name: springbootapp2
-           image: gauravbhutani30/devops:${tagVersion}
+           image: gauravbhutani30/devops:tagVersion
            ports:
            - containerPort: 8080
