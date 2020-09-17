@@ -114,7 +114,7 @@ pipeline {
         }
         failure { 
 		echo 'We have noticed some issue with the deployment, hence rolling back to the previous version...'
-        sh "kubectl rollout undo deployment/springbootapp2"
+        sh "kubectl rollout undo deployment/springbootapp --to-revision=1"
         }
        }
      }
