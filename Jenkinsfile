@@ -19,8 +19,8 @@ pipeline {
 		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
     }
-	   /*  
-	//Code Quality through SonarQube	 
+/*  
+    //Code Quality through SonarQube	 
 	stage("SonarQube Analysis"){
 	        steps {
 			withSonarQubeEnv('sonar') {
@@ -28,7 +28,7 @@ pipeline {
 		   }
 		}
 	}
-
+*/
 	//Upload the war file to Nexus
 	stage("Upload war to Nexus") {
 	          steps {
@@ -52,17 +52,17 @@ pipeline {
 	            }
 	        }
 	    }
-*/	
-    //Build the docker image 	
+	
+        //Build the docker image 	
 	stage("Build Docker Image"){
-		   steps{
+		  steps{
 		   sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}"
 		}
 	}
 	  
-	   /*
-	   //This is a working step to show the manual approval step
-	   stage("Build Docker Image - Manual Approval") {
+/*
+    //This is a working step to show the manual approval step
+	 stage("Build Docker Image - Manual Approval") {
     		   steps {
                         script {
         def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
@@ -78,49 +78,40 @@ pipeline {
        }    
       }  
     }
-    */
-	   
-	//Push the docker image to Docker Hub
-	stage('Push Docker Image'){
-                   steps {
+ */
+      //Push the docker image to Docker Hub
+      stage('Push Docker Image'){
+                steps {
         	 withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
                     sh "docker login -u gauravbhutani30 -p ${dockerHubPwd}"
-          }
+            }
         	sh 'docker push gauravbhutani30/devops:${DOCKER_TAG}'
-          }
+            }
       }
 	
-	//Deploy the docker image on Kubernetes
-	stage('Deploy to Kubernetes') {
+       stage('Deploy to Kubernetes') {
 	        steps {
-			    sh "chmod +x changeTag.sh"
-				sh "./changeTag.sh ${DOCKER_TAG}"
-				//sh "cp services.yml node-app-pod.yml /home/devopsadmin"
-				sh "cat node-app-pod.yml"
-				script {
-				   try {
-				   sh "kubectl apply -f ."
-				  }catch(error){
-				   sh "kubectl create -f ."
-			    }
-			}
-			
-			post {
-		success{
-            echo 'Execute after success - kube deploy'
+	          sh "chmod +x changeTag.sh"
+		  sh "./changeTag.sh ${DOCKER_TAG}"
+		script {
+		   try {
+		sh "kubectl apply -f ."
+		  } catch(error){
+		sh "kubectl create -f ."
+		  }
+	          }
+	       }
+	post {
+	success{
+            echo 'Your Spring boot app has been successfully deployed, Please try to access the application now'
         }
         failure { 
-	echo 'Fail test - kube deploy'
+		echo 'We have noticed some issue with the deployment, hence rolling back to the previous version...'
         sh "kubectl rollout undo deployment/springbootapp2"
         }
-	}
-		}
-		
-    }
-	}		 
+       }
+     }
    }
-	
-	
 }
 def getDockerTag() {
           def tag = sh script: 'git rev-parse HEAD', returnStdout: true
