@@ -16,10 +16,9 @@ pipeline {
 	stage("Maven Build"){
 	       steps {
 		   sh "mvn clean install"
-		   //sh "mv target/*.war target/demo-${DOCKER_TAG}.war"
 		 } 
     }
-/*  
+	   
     //Code Quality through SonarQube	 
 	stage("SonarQube Analysis"){
 	        steps {
@@ -28,9 +27,9 @@ pipeline {
 		   }
 		}
 	}
-*/
-	//Upload the war file to Nexus
-	stage("Upload war to Nexus") {
+
+     //Upload the war file to Nexus
+        stage("Upload war to Nexus") {
 	          steps {
 			script {
 			def mavenPom = readMavenPom file: 'pom.xml' 
@@ -73,18 +72,18 @@ pipeline {
            def mavenPom = readMavenPom file: 'pom.xml'
 		   sh "chmod +x updateDockerVersion.sh"
 		   sh "./updateDockerVersion.sh ${mavenPom.version}"
-        def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
+           def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', 
 											   defaultValue: true, 
 											   description: '', 
 											   name: 'Please confirm you agree with this']])
-                         echo 'userInput: ' + userInput
+                   echo 'userInput: ' + userInput
 		if(userInput == true) {
-		       sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}" 
+		    sh "docker build . -t gauravbhutani30/devops:${DOCKER_TAG}" 
 		} else {
-			echo "Action was aborted."
+	           echo "Action was aborted."
 		}
-       }    
-      }  
+             }    
+         }  
     }
  */
       //Push the docker image to Docker Hub
