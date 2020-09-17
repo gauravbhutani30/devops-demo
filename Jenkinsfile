@@ -104,25 +104,19 @@ pipeline {
 				   sh "kubectl create -f ."
 			    }
 			}
-		}
+			post {
+        failure { 
+		echo 'Fail test'
+            //sh "kubectl rollout undo deployment/springbootapp --to-revision=1"
+        }
 	}
-/*
-	stage ('Check Build Status') {
-            steps {
-		       script {
-		  try {
-		    currentBuild.result = 'SUCCESS'
-		      } catch (Exception err) {
-		    sh 'exit 1'
-		    currentBuild.result = 'FAILURE'
-		    echo 'Build if Failed'
-		    }
-		    echo "RESULT: ${currentBuild.result}"
-		 }
-	   }  
+		}
+		
     }
-    */		 
+	}		 
    }
+	
+	
 }
 def getDockerTag() {
           def tag = sh script: 'git rev-parse HEAD', returnStdout: true
