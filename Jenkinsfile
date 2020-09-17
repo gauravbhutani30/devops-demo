@@ -104,10 +104,14 @@ pipeline {
 				   sh "kubectl create -f ."
 			    }
 			}
+			
 			post {
+		success{
+            echo 'Execute after success - kube deploy'
+        }
         failure { 
-		echo 'Fail test'
-            //sh "kubectl rollout undo deployment/springbootapp --to-revision=1"
+	echo 'Fail test - kube deploy'
+        sh "kubectl rollout undo deployment/springbootapp2"
         }
 	}
 		}
