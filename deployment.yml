@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springbootapp2
+  name: springbootapp
   labels:
-    app: springbootapp2
+    app: springbootapp
 spec:
-   replicas: 2
+   replicas: 4
    strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
    selector:
      matchLabels:
-      app: springbootapp2
+      app: springbootapp
    template:
      metadata:
       labels:
-        app: springbootapp2
+        app: springbootapp
      spec:
          containers:
-         - name: springbootapp2
+         - name: springbootapp
            image: gauravbhutani30/devops:tagVersion
            ports:
            - containerPort: 8080
