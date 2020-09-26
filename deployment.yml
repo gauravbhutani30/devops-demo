@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springbootapp
+  name: springboot
   labels:
-    app: springbootapp
+    app: springboot
 spec:
    replicas: 4
    strategy:
@@ -17,10 +17,10 @@ spec:
    template:
      metadata:
       labels:
-        app: springbootapp
+        app: springboot
      spec:
          containers:
-         - name: springbootapp
+         - name: springboot
            image: gauravbhutani30/devops:tagVersion
            ports:
            - containerPort: 8080
