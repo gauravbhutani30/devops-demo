@@ -97,14 +97,18 @@ pipeline {
       }
 	
        stage('Deploy to Kubernetes') {
-	        steps {
+	       steps {
 	          sh "chmod +x changeTag.sh"
-		  sh "./changeTag.sh ${DOCKER_TAG}"
+		      sh "./changeTag.sh ${DOCKER_TAG}"
+		      sh "cp services.yml ~"
+		      sh "cp app-deployment.yml ~"
 		script {
 		   try {
-		sh "kubectl apply -f ."
+		sh "kubectl apply -f ~/app-deployment.yml"
+		sh "kubectl apply -f ~/services.yml"
 		  } catch(error){
-		sh "kubectl create -f ."
+		sh "kubectl create -f ~/app-deployment.yml"
+		sh "kubectl create -f ~/services.yml"
 		  }
 	          }
 	       }
