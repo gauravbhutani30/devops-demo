@@ -18,7 +18,7 @@ pipeline {
 		   sh "mvn clean install"
 		 } 
     }
-	   
+/*	   
     //Code Quality through SonarQube	 
 	stage("SonarQube Analysis"){
 	        steps {
@@ -51,7 +51,7 @@ pipeline {
 	            }
 	        }
 	    }
-	
+*/	
         //Build the docker image 	
 	stage("Build Docker Image"){
 		  steps {
