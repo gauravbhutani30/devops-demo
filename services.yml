@@ -1,10 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: springboot
+  name: springapp
 spec:
   selector:
-    app: springboot
+    app: springapp
   ports:
   - protocol: TCP
     port: 80
