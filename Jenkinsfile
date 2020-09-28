@@ -27,7 +27,7 @@ pipeline {
 		   }
 		}
 	}
-
+*/
      //Upload the war file to Nexus
         stage("Upload war to Nexus") {
 	          steps {
@@ -43,7 +43,7 @@ pipeline {
 				   ], 
 				   credentialsId: 'nexus3', 
 				   groupId: 'com.example', 
-				   nexusUrl: '52.188.109.125:8081',
+				   nexusUrl: '40.88.150.32:8081',
 				   nexusVersion: 'nexus3', 
 				   protocol: 'http', 
 				   repository: 'devops-release', 
@@ -51,7 +51,7 @@ pipeline {
 	            }
 	        }
 	    }
-*/	
+	
         //Build the docker image 	
 	stage("Build Docker Image"){
 		  steps {
@@ -118,7 +118,7 @@ pipeline {
         }
         failure { 
 		echo 'We have noticed some issue with the deployment, hence rolling back to the previous version...'
-        sh "kubectl rollout undo deployment/springapp --to-revision=3"
+        sh "kubectl rollout undo deployment/springapp --to-revision=1"
         }
        }
      }
