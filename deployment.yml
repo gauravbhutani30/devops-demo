@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springapp
+  name: springtestapp
   labels:
     app: springapp
 spec:
@@ -13,14 +13,14 @@ spec:
       maxUnavailable: 1
    selector:
      matchLabels:
-      app: springapp
+      app: springtestapp
    template:
      metadata:
       labels:
-        app: springapp
+        app: springtestapp
      spec:
          containers:
-         - name: springapp
+         - name: springtestapp
            image: gauravbhutani30/devops:tagVersion
            ports:
            - containerPort: 8080
