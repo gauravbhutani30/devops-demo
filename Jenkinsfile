@@ -99,7 +99,7 @@ pipeline {
        stage('Deploy to Kubernetes') {
 	       steps {
 	          sh "chmod +x changeTag.sh"
-		      sh "./changeTag.sh"
+		      sh "./changeTag.sh  ${DOCKER_TAG}"
 		      sh "cp services.yml ~"
 		      sh "cp app-deployment.yml ~"
 		script {
@@ -118,7 +118,7 @@ pipeline {
         }
         failure { 
 		echo 'We have noticed some issue with the deployment, hence rolling back to the previous version...'
-        sh "kubectl rollout undo deployment/springtestapp --to-revision=1"
+        sh "kubectl rollout undo deployment/springbootapp --to-revision=1"
         }
        }
      }
